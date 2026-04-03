@@ -161,12 +161,20 @@ document.getElementById('btnCopiar').addEventListener('click', () => {
     alert("¡Copiado al portapapeles!");
 });
 
-// ENVIAR POR WHATSAPP
+// ENVIAR POR WHATSAPP (Ajustado para App Inventor)
 document.getElementById('btnWhatsApp').addEventListener('click', () => {
     let texto = "📍 *RESULTADOS GEOGRAFÍA*:\n\n";
     datosClase.forEach(d => {
         texto += `*${d.alumno}* (${d.provincia})\n_Respuestas:_ ${d.respuestas.join(" / ")}\n\n`;
     });
-    const url = "https://api.whatsapp.com/send?text=" + encodeURIComponent(texto);
-    window.open(url, '_blank');
+    
+    const urlWhatsApp = "whatsapp://send?text=" + encodeURIComponent(texto);
+
+    // Si detectamos que la página está abierta desde MIT App Inventor:
+    if (window.AppInventor) {
+        window.AppInventor.setWebViewString(urlWhatsApp);
+    } else {
+        // Por si la usás directo en la compu
+        window.open("https://api.whatsapp.com/send?text=" + encodeURIComponent(texto), '_blank');
+    }
 });
